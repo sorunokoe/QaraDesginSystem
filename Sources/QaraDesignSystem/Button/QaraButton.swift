@@ -10,6 +10,12 @@ public struct QaraButton: View {
     var action: (() -> Void)
     var backgroundColor: Color
     
+    public init(text: String, action: @escaping () -> Void, backgroundColor: Color) {
+        self.text = text
+        self.action = action
+        self.backgroundColor = backgroundColor
+    }
+    
     public var body: some View {
         Button(action: {
             action()
