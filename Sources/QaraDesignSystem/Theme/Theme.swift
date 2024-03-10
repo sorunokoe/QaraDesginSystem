@@ -7,20 +7,20 @@
 
 import SwiftUI
 
-class Theme {
+public class Theme {
     
-    static var shared: Theme!
+    public static var shared: Theme!
     
-    struct QaraColors {
+    public struct QaraColors {
         var brandColor: Color
         var selectedColor: Color
         var successColor: Color
         var failureColor: Color
     }
     
-    var colors: QaraColors
+    public var colors: QaraColors
     
-    static func createTheme(colors: QaraColors) {
+    public static func createTheme(colors: QaraColors) {
         self.shared = Theme(colors: colors)
     }
     

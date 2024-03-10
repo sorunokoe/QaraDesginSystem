@@ -4,13 +4,13 @@
 import SwiftUI
 
 @MainActor
-struct QaraButton: View {
+public struct QaraButton: View {
     
     var text: String
     var action: (() -> Void)
     var backgroundColor: Color
     
-    var body: some View {
+    public var body: some View {
         Button(action: {
             action()
         }, label: {
