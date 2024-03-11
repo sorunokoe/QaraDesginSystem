@@ -8,12 +8,20 @@ public struct QaraButton: View {
     
     var text: String
     var action: (() -> Void)
+    var foregroundColor: Color
     var backgroundColor: Color
+    var stroke: (color: Color, width: CGFloat)?
     
-    public init(text: String, action: @escaping () -> Void, backgroundColor: Color) {
+    public init(text: String,
+                action: @escaping () -> Void,
+                backgroundColor: Color,
+                foregroundColor: Color,
+                stroke: (Color, CGFloat)? = nil) {
         self.text = text
         self.action = action
         self.backgroundColor = backgroundColor
+        self.foregroundColor = foregroundColor
+        self.stroke = stroke
     }
     
     public var body: some View {
@@ -23,10 +31,24 @@ public struct QaraButton: View {
             Text(text)
                 .frame(maxWidth: .infinity)
                 .padding(16)
-                .foregroundStyle(.white)
+                .foregroundStyle(foregroundColor)
                 .background(backgroundColor)
-                .clipShape(.rect(cornerSize: CGSize(width: 16, height: 16)))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16)
+                        .stroke(stroke?.color ?? .clear,
+                                lineWidth: stroke?.width ?? 0)
+                )
+            
+            
         })
     }
     
+}
+
+#Preview {
+    QaraButton(text: "Continue",
+               action: {},
+               backgroundColor: .clear,
+               foregroundColor: .green,
+               stroke: (color: .green, width: 1))
 }
