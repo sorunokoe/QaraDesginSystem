@@ -32,9 +32,9 @@ public struct QaraButton: View {
                 .frame(maxWidth: .infinity)
                 .padding(16)
                 .foregroundStyle(foregroundColor)
-                .background(backgroundColor)
-                .overlay(
+                .background(
                     RoundedRectangle(cornerRadius: 16)
+                        .fill(backgroundColor)
                         .stroke(stroke?.color ?? .clear,
                                 lineWidth: stroke?.width ?? 0)
                 )
@@ -46,9 +46,15 @@ public struct QaraButton: View {
 }
 
 #Preview {
-    QaraButton(text: "Continue",
-               action: {},
-               backgroundColor: .clear,
-               foregroundColor: .green,
-               stroke: (color: .green, width: 1))
+    VStack {
+        QaraButton(text: "Continue",
+                   action: {},
+                   backgroundColor: .clear,
+                   foregroundColor: .green,
+                   stroke: (color: .green, width: 1))
+        QaraButton(text: "Continue",
+                   action: {},
+                   backgroundColor: .green,
+                   foregroundColor: .white)
+    }
 }
