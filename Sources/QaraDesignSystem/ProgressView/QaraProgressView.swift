@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ProgressView: View {
+struct QaraProgressView: View {
     
     var progress: CGFloat
     var cornerRadius: CGFloat
@@ -29,6 +29,6 @@ struct ProgressView: View {
 }
 
 #Preview {
-    ProgressView(progress: 0.8, cornerRadius: 16,
+    QaraProgressView(progress: 0.8, cornerRadius: 16,
                  background: .gray, tint: .blue)
 }
