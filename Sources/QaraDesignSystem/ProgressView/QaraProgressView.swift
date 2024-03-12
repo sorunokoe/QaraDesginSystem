@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 public struct QaraProgressView: View {
     
     var progress: CGFloat
@@ -21,6 +22,7 @@ public struct QaraProgressView: View {
         self.tint = tint
     }
     
+    @ViewBuilder
     public var body: some View {
         GeometryReader { geo in
             RoundedRectangle(cornerRadius: cornerRadius)
