@@ -8,31 +8,24 @@
 import UIKit
 import SwiftUI
 
-public struct WrappedWordsHStack: View {
+public struct WrappedWordsHStack<Content: View>: View {
     
-    private var words: [String]
-    private var onTap: (String) -> Void
+    private let words: [String]
+    private let content: (String) -> Content
     
-    private var foregroundColor: Color
-    private var backgroundColor: Color
+    private let spacing: CGFloat
+    private let itemSpacing: CGFloat
+    private let itemPadding: CGFloat
+    private let fontSize: CGFloat
     
-    private var spacing: CGFloat = 8
-    private var itemSpacing: CGFloat = 8
-    private var itemPadding: CGFloat = 8
-    private var fontSize: CGFloat = 18
-    
-    public init(words: [String], 
-                onTap: @escaping (String) -> Void,
-                foregroundColor: Color,
-                backgroundColor: Color,
+    public init(words: [String],
+                content: @escaping (String) -> Content,
                 spacing: CGFloat = 8,
                 itemSpacing: CGFloat = 8,
                 itemPadding: CGFloat = 8,
                 fontSize: CGFloat = 18) {
         self.words = words
-        self.onTap = onTap
-        self.foregroundColor = foregroundColor
-        self.backgroundColor = backgroundColor
+        self.content = content
         self.spacing = spacing
         self.itemSpacing = itemSpacing
         self.itemPadding = itemPadding
@@ -45,17 +38,7 @@ public struct WrappedWordsHStack: View {
             ForEach(getRows(words: words), id: \.self) { row in
                 HStack(alignment: .center, spacing: itemSpacing) {
                     ForEach(row, id: \.self) { word in
-                        Text(word)
-                            .font(.system(size: fontSize))
-                            .padding(itemPadding)
-                            .foregroundStyle(foregroundColor)
-                            .background(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .fill(backgroundColor)
-                            )
-                            .onTapGesture {
-                                onTap(word)
-                            }
+                        content(word)
                     }
                 }
             }
@@ -97,8 +80,14 @@ public struct WrappedWordsHStack: View {
 
 #Preview {
     WrappedWordsHStack(words: ["hey", "how", "are", "you", "doing",
-                               "everything", "all", "right", "good"],
-                       onTap: { _ in },
-                       foregroundColor: .white,
-                       backgroundColor: .blue)
+                               "everything", "all", "right", "good"]) { word in
+        Text(word)
+            .font(.system(size: 18))
+            .padding(8)
+            .foregroundStyle(.white)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(.blue)
+            )
+    }
 }
