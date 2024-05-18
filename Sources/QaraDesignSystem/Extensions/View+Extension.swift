@@ -10,7 +10,7 @@ import UIKit
 
 extension View {
     @available(iOS 14, *)
-    func navigationBar(_ titleColor: Color, backgroundColor: Color) -> some View {
+    public func navigationBar(_ titleColor: Color, backgroundColor: Color) -> some View {
         let uiColor = UIColor(titleColor)
         UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: uiColor ]
         UINavigationBar.appearance().largeTitleTextAttributes = [.foregroundColor: uiColor ]
