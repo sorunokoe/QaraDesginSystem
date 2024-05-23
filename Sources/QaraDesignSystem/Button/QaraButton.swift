@@ -7,21 +7,24 @@ import SwiftUI
 public struct QaraButton: View {
     
     var text: String
-    var action: (() -> Void)
     var foregroundColor: Color
     var backgroundColor: Color
     var stroke: (color: Color, width: CGFloat)?
+    var font: Font
+    var action: (() -> Void)
     
     public init(text: String,
-                action: @escaping () -> Void,
                 backgroundColor: Color,
                 foregroundColor: Color,
-                stroke: (Color, CGFloat)? = nil) {
+                font: Font = .system(size: 16, weight: .medium),
+                stroke: (Color, CGFloat)? = nil,
+                action: @escaping () -> Void) {
         self.text = text
-        self.action = action
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
+        self.font = font
         self.stroke = stroke
+        self.action = action
     }
     
     public var body: some View {
@@ -29,6 +32,7 @@ public struct QaraButton: View {
             action()
         }, label: {
             Text(text)
+                .font(font)
                 .frame(maxWidth: .infinity)
                 .padding(16)
                 .foregroundStyle(foregroundColor)
@@ -48,13 +52,13 @@ public struct QaraButton: View {
 #Preview {
     VStack {
         QaraButton(text: "Continue",
-                   action: {},
                    backgroundColor: .clear,
                    foregroundColor: .green,
-                   stroke: (color: .green, width: 1))
+                   stroke: (color: .green, width: 1),
+                   action: {})
         QaraButton(text: "Continue",
-                   action: {},
                    backgroundColor: .green,
-                   foregroundColor: .white)
+                   foregroundColor: .white,
+                   action: {})
     }
 }
