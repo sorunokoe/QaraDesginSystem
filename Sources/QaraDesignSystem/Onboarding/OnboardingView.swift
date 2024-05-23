@@ -34,19 +34,23 @@ public struct OnboardingView: View {
     var foregroundColor: Color
     var buttonBackgroundColor: Color
     var buttonColor: Color
+    
+    var onFinish: (() -> Void)
 
     public init(
         slides: [OnboardingSlide],
         backgroundColor: Color,
         foregroundColor: Color,
         buttonBackgroundColor: Color,
-        buttonColor: Color
+        buttonColor: Color,
+        onFinish: @escaping (() -> Void)
     ) {
         self.slides = slides
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
         self.buttonBackgroundColor = buttonBackgroundColor
         self.buttonColor = buttonColor
+        self.onFinish = onFinish
     }
 
     public var body: some View {
@@ -82,6 +86,8 @@ public struct OnboardingView: View {
                         withAnimation {
                             currentIndex += 1
                         }
+                    } else {
+                        onFinish()
                     }
                 }
             )
@@ -92,6 +98,7 @@ public struct OnboardingView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     OnboardingView(
         slides: [
@@ -129,6 +136,10 @@ public struct OnboardingView: View {
         backgroundColor: .black,
         foregroundColor: .white,
         buttonBackgroundColor: .white,
-        buttonColor: .black
+        buttonColor: .black, 
+        onFinish: {
+            print("Did finish")
+        }
     )
 }
+#endif
