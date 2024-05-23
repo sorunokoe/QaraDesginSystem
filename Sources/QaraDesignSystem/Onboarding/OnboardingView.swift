@@ -8,18 +8,18 @@
 import SwiftUI
 
 public struct OnboardingSlide {
-    var blockView: AnyView
+    var contentView: () -> AnyView
     var title: String
     var description: String
     var buttonTitle: String
 
     public init(
-        blockView: AnyView,
+        contentView: @escaping () -> AnyView,
         title: String,
         description: String,
         buttonTitle: String
     ) {
-        self.blockView = blockView
+        self.contentView = contentView
         self.title = title
         self.description = description
         self.buttonTitle = buttonTitle
@@ -27,7 +27,7 @@ public struct OnboardingSlide {
 }
 
 public struct OnboardingView: View {
-    var slides: [OnboardingSlide] = []
+    var slides: [OnboardingSlide]
     @State private var currentIndex: Int = 0
 
     var backgroundColor: Color
@@ -61,7 +61,7 @@ public struct OnboardingView: View {
                 }
             }
             Spacer()
-            slides[currentIndex].blockView
+            slides[currentIndex].contentView()
             Spacer()
             VStack(alignment: .center, spacing: 16) {
                 Text(slides[currentIndex].title)
@@ -96,19 +96,31 @@ public struct OnboardingView: View {
     OnboardingView(
         slides: [
             .init(
-                blockView: AnyView(Image(systemName: "basketball.circle.fill").resizable().foregroundStyle(.white)),
+                contentView: {
+                    AnyView(Image(systemName: "basketball.circle.fill")
+                        .resizable()
+                        .foregroundStyle(.white))
+                },
                 title: "Step 1",
                 description: "1: Complete daily quest to increase your level and get powerful",
                 buttonTitle: "Next"
             ),
             .init(
-                blockView: AnyView(Image(systemName: "volleyball.circle.fill").resizable().foregroundStyle(.white)),
+                contentView: {
+                    AnyView(Image(systemName: "volleyball.circle.fill")
+                        .resizable()
+                        .foregroundStyle(.white))
+                },
                 title: "Step 2",
                 description: "2: Complete daily quest to increase your level and get powerful",
                 buttonTitle: "Next"
             ),
             .init(
-                blockView: AnyView(Image(systemName: "trophy.circle.fill").resizable().foregroundStyle(.white)),
+                contentView: {
+                    AnyView(Image(systemName: "trophy.circle.fill")
+                        .resizable()
+                        .foregroundStyle(.white))
+                },
                 title: "Step 3",
                 description: "3: Complete daily quest to increase your level and get powerful",
                 buttonTitle: "Complete"
