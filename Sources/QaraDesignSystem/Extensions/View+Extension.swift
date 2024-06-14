@@ -5,6 +5,7 @@
 //  Created by SALGARA, YESKENDIR on 18.05.24.
 //
 
+#if canImport(UIKit)
 import SwiftUI
 import UIKit
 
@@ -19,3 +20,4 @@ extension View {
         return self
     }
 }
+#endif

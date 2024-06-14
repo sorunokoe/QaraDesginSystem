@@ -5,6 +5,7 @@
 //  Created by SALGARA, YESKENDIR on 16.03.24.
 //
 
+#if canImport(UIKit)
 import UIKit
 import SwiftUI
 
@@ -91,3 +92,4 @@ public struct WrappedWordsHStack<Content: View>: View {
             )
     }
 }
+#endif
