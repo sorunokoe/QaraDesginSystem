@@ -36,7 +36,7 @@ public struct OnboardingView: View {
     
     var onFinish: (() -> Void)
 
-    @State var hStackScrollPosition: Int? = 0
+    @State private var hStackScrollPosition: Int? = 0
     
     public init(
         slides: [OnboardingSlide],
@@ -82,6 +82,7 @@ public struct OnboardingView: View {
                             .multilineTextAlignment(.center)
                             .foregroundColor(foregroundColor)
                         }
+                        .padding(20)
                         .containerRelativeFrame(.horizontal)
                         .id(index)
                     }
@@ -108,8 +109,8 @@ public struct OnboardingView: View {
                     }
                 }
             )
+            .padding(20)
         }
-        .padding(20)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundColor)
     }
