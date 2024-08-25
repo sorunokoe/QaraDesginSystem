@@ -28,7 +28,6 @@ public struct OnboardingSlide {
 
 public struct OnboardingView: View {
     var slides: [OnboardingSlide]
-    @State private var currentIndex: Int = 0
 
     var backgroundColor: Color
     var foregroundColor: Color
@@ -37,6 +36,8 @@ public struct OnboardingView: View {
     
     var onFinish: (() -> Void)
 
+    @State var hStackScrollPosition: Int? = 0
+    
     public init(
         slides: [OnboardingSlide],
         backgroundColor: Color,
@@ -59,32 +60,48 @@ public struct OnboardingView: View {
                 HStack(alignment: .center, spacing: 4) {
                     ForEach(0 ..< slides.count, id: \.self) { i in
                         Circle()
-                            .fill(i == currentIndex ? foregroundColor : foregroundColor.opacity(0.4))
+                            .fill((i == (hStackScrollPosition ?? 0)) ? foregroundColor : foregroundColor.opacity(0.4))
                             .frame(width: 8, height: 8)
                     }
                 }
             }
-            Spacer()
-            slides[currentIndex].contentView()
-            Spacer()
-            VStack(alignment: .center, spacing: 16) {
-                Text(slides[currentIndex].title)
-                    .font(.system(size: 32, weight: .medium))
-                Text(slides[currentIndex].description)
-                    .font(.system(size: 18, weight: .regular))
+            
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 0) {
+                    ForEach(Array(slides.enumerated()), id: \.offset) { index, slide in
+                        VStack(alignment: .center) {
+                            slide.contentView()
+                            VStack(alignment: .center, spacing: 16) {
+                                Text(slide.title)
+                                    .font(.system(size: 32, weight: .medium))
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Text(slide.description)
+                                    .font(.system(size: 18, weight: .regular))
+                                    .fixedSize(horizontal: false, vertical: true)
+                            }
+                            .multilineTextAlignment(.center)
+                            .foregroundColor(foregroundColor)
+                        }
+                        .containerRelativeFrame(.horizontal)
+                        .id(index)
+                    }
+                }
+                .scrollTargetLayout()
             }
-            .multilineTextAlignment(.center)
-            .foregroundColor(foregroundColor)
-            Spacer()
+            .scrollTargetBehavior(.paging)
+            .containerRelativeFrame(.horizontal, count: 1, spacing: 0)
+            .scrollClipDisabled()
+            .scrollPosition(id: $hStackScrollPosition)
+
             QaraButton(
-                text: slides[currentIndex].buttonTitle,
+                text: slides[hStackScrollPosition ?? 0].buttonTitle,
                 backgroundColor: buttonBackgroundColor,
                 foregroundColor: buttonColor,
                 font: .system(size: 18, weight: .medium),
                 action: {
-                    if currentIndex < slides.count - 1 {
+                    if (hStackScrollPosition ?? 0) < slides.count - 1 {
                         withAnimation {
-                            currentIndex += 1
+                            hStackScrollPosition = (hStackScrollPosition ?? 0) + 1
                         }
                     } else {
                         onFinish()
@@ -106,6 +123,7 @@ public struct OnboardingView: View {
                 contentView: {
                     AnyView(Image(systemName: "basketball.circle.fill")
                         .resizable()
+                        .frame(width: 100, height: 100)
                         .foregroundStyle(.white))
                 },
                 title: "Step 1",
@@ -116,6 +134,7 @@ public struct OnboardingView: View {
                 contentView: {
                     AnyView(Image(systemName: "volleyball.circle.fill")
                         .resizable()
+                        .frame(width: 100, height: 100)
                         .foregroundStyle(.white))
                 },
                 title: "Step 2",
@@ -126,6 +145,7 @@ public struct OnboardingView: View {
                 contentView: {
                     AnyView(Image(systemName: "trophy.circle.fill")
                         .resizable()
+                        .frame(width: 100, height: 100)
                         .foregroundStyle(.white))
                 },
                 title: "Step 3",
