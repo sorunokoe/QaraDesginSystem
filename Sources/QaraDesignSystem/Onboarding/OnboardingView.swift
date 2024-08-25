@@ -56,16 +56,6 @@ public struct OnboardingView: View {
 
     public var body: some View {
         VStack(alignment: .center, spacing: 32) {
-            if slides.count > 1 {
-                HStack(alignment: .center, spacing: 4) {
-                    ForEach(0 ..< slides.count, id: \.self) { i in
-                        Circle()
-                            .fill((i == (hStackScrollPosition ?? 0)) ? foregroundColor : foregroundColor.opacity(0.4))
-                            .frame(width: 8, height: 8)
-                    }
-                }
-            }
-            
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
                     ForEach(Array(slides.enumerated()), id: \.offset) { index, slide in
@@ -94,6 +84,16 @@ public struct OnboardingView: View {
             .scrollClipDisabled()
             .scrollPosition(id: $hStackScrollPosition)
 
+            if slides.count > 1 {
+                HStack(alignment: .center, spacing: 4) {
+                    ForEach(0 ..< slides.count, id: \.self) { i in
+                        Circle()
+                            .fill((i == (hStackScrollPosition ?? 0)) ? foregroundColor : foregroundColor.opacity(0.4))
+                            .frame(width: 8, height: 8)
+                    }
+                }
+            }
+            
             QaraButton(
                 text: slides[hStackScrollPosition ?? 0].buttonTitle,
                 backgroundColor: buttonBackgroundColor,
@@ -109,7 +109,8 @@ public struct OnboardingView: View {
                     }
                 }
             )
-            .padding(20)
+            .shadow(color: buttonBackgroundColor, radius: 2)
+            .padding(.horizontal, 20)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundColor)
