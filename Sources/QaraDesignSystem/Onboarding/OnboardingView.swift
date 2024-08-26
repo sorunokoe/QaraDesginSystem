@@ -34,7 +34,8 @@ public struct OnboardingView: View {
     var buttonBackgroundColor: Color
     var buttonColor: Color
     
-    var onFinish: (() -> Void)
+    var onNext: (() -> Void)?
+    var onFinish: () -> Void
 
     @State private var hStackScrollPosition: Int? = 0
     
@@ -44,6 +45,7 @@ public struct OnboardingView: View {
         foregroundColor: Color,
         buttonBackgroundColor: Color,
         buttonColor: Color,
+        onNext: (() -> Void)?,
         onFinish: @escaping (() -> Void)
     ) {
         self.slides = slides
@@ -51,6 +53,7 @@ public struct OnboardingView: View {
         self.foregroundColor = foregroundColor
         self.buttonBackgroundColor = buttonBackgroundColor
         self.buttonColor = buttonColor
+        self.onNext = onNext
         self.onFinish = onFinish
     }
 
@@ -101,6 +104,7 @@ public struct OnboardingView: View {
                 font: .system(size: 18, weight: .medium),
                 action: {
                     if (hStackScrollPosition ?? 0) < slides.count - 1 {
+                        onNext?()
                         withAnimation {
                             hStackScrollPosition = (hStackScrollPosition ?? 0) + 1
                         }
@@ -159,6 +163,7 @@ public struct OnboardingView: View {
         foregroundColor: .white,
         buttonBackgroundColor: .white,
         buttonColor: .black, 
+        onNext: nil, 
         onFinish: {
             print("Did finish")
         }
