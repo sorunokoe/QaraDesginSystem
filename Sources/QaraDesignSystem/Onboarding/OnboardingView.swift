@@ -114,16 +114,17 @@ public struct OnboardingView: View {
         HStack(alignment: .center, spacing: 16) {
             QaraButton(
                 text: slides[hStackScrollPosition ?? 0].prevButtonTitle,
-                backgroundColor: buttonColor,
+                backgroundColor: .clear,
                 foregroundColor: buttonBackgroundColor,
                 font: .system(size: 18, weight: .medium),
+                stroke: (buttonBackgroundColor, 1),
                 height: 50,
                 action: {
                     UINotificationFeedbackGenerator().notificationOccurred(.success)
                     onFinish()
                 }
             )
-            .shadow(color: buttonBackgroundColor, radius: 2)
+            .shadow(color: buttonBackgroundColor, radius: 1)
             QaraButton(
                 text: slides[hStackScrollPosition ?? 0].nextButtonTitle,
                 backgroundColor: buttonBackgroundColor,
@@ -189,10 +190,10 @@ public struct OnboardingView: View {
                 nextButtonTitle: "Complete"
             ),
         ],
-        backgroundColor: .black,
-        foregroundColor: .white,
-        buttonBackgroundColor: .white,
-        buttonColor: .black, 
+        backgroundColor: .white,
+        foregroundColor: .black,
+        buttonBackgroundColor: .black.opacity(0.8),
+        buttonColor: .white,
         onChange: nil,
         onFinish: {
             print("Did finish")
