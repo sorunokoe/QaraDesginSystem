@@ -11,6 +11,7 @@ public struct QaraButton: View {
     var backgroundColor: Color
     var stroke: (color: Color, width: CGFloat)?
     var font: Font
+    var height: CGFloat
     var action: (() -> Void)
     
     public init(text: String,
@@ -18,11 +19,13 @@ public struct QaraButton: View {
                 foregroundColor: Color,
                 font: Font = .system(size: 16, weight: .medium),
                 stroke: (Color, CGFloat)? = nil,
+                height: CGFloat = 40,
                 action: @escaping () -> Void) {
         self.text = text
         self.backgroundColor = backgroundColor
         self.foregroundColor = foregroundColor
         self.font = font
+        self.height = height
         self.stroke = stroke
         self.action = action
     }
@@ -34,6 +37,7 @@ public struct QaraButton: View {
             Text(text)
                 .font(font)
                 .frame(maxWidth: .infinity)
+                .frame(height: height)
                 .padding(16)
                 .foregroundStyle(foregroundColor)
                 .background(
@@ -42,9 +46,9 @@ public struct QaraButton: View {
                         .stroke(stroke?.color ?? .clear,
                                 lineWidth: stroke?.width ?? 0)
                 )
-            
-            
         })
+        .compositingGroup()
+        .contentShape(.capsule)
     }
     
 }
@@ -55,6 +59,7 @@ public struct QaraButton: View {
                    backgroundColor: .clear,
                    foregroundColor: .green,
                    stroke: (color: .green, width: 1),
+                   height: 80,
                    action: {})
         QaraButton(text: "Continue",
                    backgroundColor: .green,

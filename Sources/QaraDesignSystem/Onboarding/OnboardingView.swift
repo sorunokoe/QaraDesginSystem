@@ -11,21 +11,25 @@ public struct OnboardingSlide {
     var contentView: () -> AnyView
     var title: String
     var description: String
-    var buttonTitle: String
+    var prevButtonTitle: String
+    var nextButtonTitle: String
 
     public init(
         contentView: @escaping () -> AnyView,
         title: String,
         description: String,
-        buttonTitle: String
+        prevButtonTitle: String,
+        nextButtonTitle: String
     ) {
         self.contentView = contentView
         self.title = title
         self.description = description
-        self.buttonTitle = buttonTitle
+        self.prevButtonTitle = prevButtonTitle
+        self.nextButtonTitle = nextButtonTitle
     }
 }
 
+@MainActor
 public struct OnboardingView: View {
     var slides: [OnboardingSlide]
 
@@ -88,20 +92,44 @@ public struct OnboardingView: View {
             .scrollPosition(id: $hStackScrollPosition)
 
             if slides.count > 1 {
-                HStack(alignment: .center, spacing: 4) {
-                    ForEach(0 ..< slides.count, id: \.self) { i in
-                        Circle()
-                            .fill((i == (hStackScrollPosition ?? 0)) ? foregroundColor : foregroundColor.opacity(0.4))
-                            .frame(width: 8, height: 8)
-                    }
-                }
+                IndicatorView(currentIndex: (hStackScrollPosition ?? 0),
+                              count: slides.count,
+                              color: foregroundColor)
+                .padding(.vertical, 16)
             }
             
+            buttons
+                .padding(.vertical, 16)
+            
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(backgroundColor)
+        .onChange(of: hStackScrollPosition) {
+            onChange?(hStackScrollPosition ?? 0)
+        }
+    }
+    
+    @ViewBuilder
+    var buttons: some View {
+        HStack(alignment: .center, spacing: 16) {
             QaraButton(
-                text: slides[hStackScrollPosition ?? 0].buttonTitle,
+                text: slides[hStackScrollPosition ?? 0].prevButtonTitle,
+                backgroundColor: buttonColor,
+                foregroundColor: buttonBackgroundColor,
+                font: .system(size: 18, weight: .medium),
+                height: 50,
+                action: {
+                    UINotificationFeedbackGenerator().notificationOccurred(.success)
+                    onFinish()
+                }
+            )
+            .shadow(color: buttonBackgroundColor, radius: 2)
+            QaraButton(
+                text: slides[hStackScrollPosition ?? 0].nextButtonTitle,
                 backgroundColor: buttonBackgroundColor,
                 foregroundColor: buttonColor,
                 font: .system(size: 18, weight: .medium),
+                height: 50,
                 action: {
                     if (hStackScrollPosition ?? 0) < slides.count - 1 {
                         onChange?(hStackScrollPosition ?? 0)
@@ -109,18 +137,14 @@ public struct OnboardingView: View {
                             hStackScrollPosition = (hStackScrollPosition ?? 0) + 1
                         }
                     } else {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
                         onFinish()
                     }
                 }
             )
             .shadow(color: buttonBackgroundColor, radius: 2)
-            .padding(.horizontal, 20)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(backgroundColor)
-        .onChange(of: hStackScrollPosition) {
-            onChange?(hStackScrollPosition ?? 0)
-        }
+        .padding(.horizontal, 20)
     }
 }
 
@@ -137,7 +161,8 @@ public struct OnboardingView: View {
                 },
                 title: "Step 1",
                 description: "1: Complete daily quest to increase your level and get powerful",
-                buttonTitle: "Next"
+                prevButtonTitle: "Skip",
+                nextButtonTitle: "Next"
             ),
             .init(
                 contentView: {
@@ -148,7 +173,8 @@ public struct OnboardingView: View {
                 },
                 title: "Step 2",
                 description: "2: Complete daily quest to increase your level and get powerful",
-                buttonTitle: "Next"
+                prevButtonTitle: "Skip",
+                nextButtonTitle: "Next"
             ),
             .init(
                 contentView: {
@@ -159,7 +185,8 @@ public struct OnboardingView: View {
                 },
                 title: "Step 3",
                 description: "3: Complete daily quest to increase your level and get powerful",
-                buttonTitle: "Complete"
+                prevButtonTitle: "Skip",
+                nextButtonTitle: "Complete"
             ),
         ],
         backgroundColor: .black,
