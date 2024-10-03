@@ -128,7 +128,6 @@ public struct OnboardingView: View {
                         onFinish()
                     }
                 )
-                .shadow(color: buttonBackgroundColor, radius: 1)
             }
             QaraButton(
                 text: slides[hStackScrollPosition ?? 0].nextButtonTitle,
