@@ -104,27 +104,32 @@ public struct OnboardingView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundColor)
+        .animation(.easeInOut)
         .onChange(of: hStackScrollPosition) {
-            onChange?(hStackScrollPosition ?? 0)
+            withAnimation {
+                onChange?(hStackScrollPosition ?? 0)
+            }
         }
     }
     
     @ViewBuilder
     var buttons: some View {
         HStack(alignment: .center, spacing: 16) {
-            QaraButton(
-                text: slides[hStackScrollPosition ?? 0].prevButtonTitle,
-                backgroundColor: .clear,
-                foregroundColor: buttonBackgroundColor,
-                font: .system(size: 18, weight: .medium),
-                stroke: (buttonBackgroundColor, 1),
-                height: 50,
-                action: {
-                    UINotificationFeedbackGenerator().notificationOccurred(.success)
-                    onFinish()
-                }
-            )
-            .shadow(color: buttonBackgroundColor, radius: 1)
+            if hStackScrollPosition != slides.count - 1 {
+                QaraButton(
+                    text: slides[hStackScrollPosition ?? 0].prevButtonTitle,
+                    backgroundColor: .clear,
+                    foregroundColor: buttonBackgroundColor,
+                    font: .system(size: 18, weight: .medium),
+                    stroke: (buttonBackgroundColor, 1),
+                    height: 50,
+                    action: {
+                        UINotificationFeedbackGenerator().notificationOccurred(.success)
+                        onFinish()
+                    }
+                )
+                .shadow(color: buttonBackgroundColor, radius: 1)
+            }
             QaraButton(
                 text: slides[hStackScrollPosition ?? 0].nextButtonTitle,
                 backgroundColor: buttonBackgroundColor,
