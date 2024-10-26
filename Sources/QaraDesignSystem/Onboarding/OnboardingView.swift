@@ -122,7 +122,7 @@ public struct OnboardingView: View {
                     foregroundColor: buttonBackgroundColor,
                     font: .system(size: 18, weight: .medium),
                     stroke: (buttonBackgroundColor, 1),
-                    height: 50,
+                    height: 24,
                     action: {
                         UINotificationFeedbackGenerator().notificationOccurred(.success)
                         onFinish()
@@ -134,7 +134,7 @@ public struct OnboardingView: View {
                 backgroundColor: buttonBackgroundColor,
                 foregroundColor: buttonColor,
                 font: .system(size: 18, weight: .medium),
-                height: 50,
+                height: 24,
                 action: {
                     if (hStackScrollPosition ?? 0) < slides.count - 1 {
                         onChange?(hStackScrollPosition ?? 0)
