@@ -82,9 +82,9 @@ public struct OnboardingView: View {
                         .padding(20)
                         .containerRelativeFrame(.horizontal)
                         .id(index)
+                        .scrollTargetLayout()
                     }
                 }
-                .scrollTargetLayout()
             }
             .scrollTargetBehavior(.paging)
             .containerRelativeFrame(.horizontal, count: 1, spacing: 0)
