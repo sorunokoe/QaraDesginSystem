@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-public struct OnboardingSlide {
+public struct OnboardingSlide: Identifiable {
+    public var id: UUID = UUID()
     var contentView: () -> AnyView
     var title: String
     var description: String
@@ -41,7 +42,7 @@ public struct OnboardingView: View {
     var onChange: ((Int) -> Void)?
     var onFinish: () -> Void
 
-    @State private var hStackScrollPosition: Int?
+    @State private var hStackScrollPosition: Int? = 0
     
     public init(
         slides: [OnboardingSlide],
@@ -82,9 +83,9 @@ public struct OnboardingView: View {
                         .padding(20)
                         .containerRelativeFrame(.horizontal)
                         .id(index)
-                        .scrollTargetLayout()
                     }
                 }
+                .scrollTargetLayout()
             }
             .scrollTargetBehavior(.paging)
             .containerRelativeFrame(.horizontal, count: 1, spacing: 0)
