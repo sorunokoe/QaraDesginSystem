@@ -41,7 +41,7 @@ public struct OnboardingView: View {
     var onChange: ((Int) -> Void)?
     var onFinish: () -> Void
 
-    @State private var hStackScrollPosition: Int? = 0
+    @State private var hStackScrollPosition: Int?
     
     public init(
         slides: [OnboardingSlide],
