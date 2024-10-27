@@ -109,7 +109,7 @@ public struct OnboardingView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(backgroundColor)
-        .animation(.easeInOut)
+        .animation(.easeInOut, value: hStackScrollPosition)
         .onChange(of: hStackScrollPosition) {
             withAnimation {
                 onChange?(hStackScrollPosition ?? 0)
@@ -142,7 +142,6 @@ public struct OnboardingView: View {
                 height: 24,
                 action: {
                     if (hStackScrollPosition ?? 0) < slides.count - 1 {
-                        onChange?(hStackScrollPosition ?? 0)
                         hStackScrollPosition = (hStackScrollPosition ?? 0) + 1
                     } else {
                         UINotificationFeedbackGenerator().notificationOccurred(.success)
