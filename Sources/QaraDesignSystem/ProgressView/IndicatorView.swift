@@ -24,7 +24,7 @@ public struct IndicatorView: View {
                 if (i == currentIndex) {
                     RoundedRectangle(cornerRadius: 4)
                         .fill(color)
-                        .frame(width: 16, height: 8)
+                        .frame(width: 10, height: 8)
                 } else {
                     Circle()
                         .fill(color.opacity(0.4))

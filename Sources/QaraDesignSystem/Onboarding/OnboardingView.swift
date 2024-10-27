@@ -9,14 +9,14 @@ import SwiftUI
 
 public struct OnboardingSlide: Identifiable {
     public var id: UUID = UUID()
-    var contentView: () -> AnyView
+    var contentView: (() -> AnyView)?
     var title: String
     var description: String
     var prevButtonTitle: String
     var nextButtonTitle: String
 
     public init(
-        contentView: @escaping () -> AnyView,
+        contentView: (() -> AnyView)?,
         title: String,
         description: String,
         prevButtonTitle: String,
@@ -63,12 +63,22 @@ public struct OnboardingView: View {
     }
 
     public var body: some View {
-        VStack(alignment: .center, spacing: 32) {
+        ZStack {
+            if slides.count > 1 {
+                IndicatorView(currentIndex: (hStackScrollPosition ?? 0),
+                              count: slides.count,
+                              color: buttonBackgroundColor)
+                .padding(.vertical, 16)
+                .frame(maxHeight: .infinity, alignment: .top)
+            }
+            Spacer()
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
                     ForEach(Array(slides.enumerated()), id: \.offset) { index, slide in
                         VStack(alignment: .center) {
-                            slide.contentView()
+                            if let contentView = slide.contentView {
+                                contentView()
+                            }
                             VStack(alignment: .center, spacing: 16) {
                                 Text(slide.title)
                                     .font(.system(size: 32, weight: .medium))
@@ -79,8 +89,8 @@ public struct OnboardingView: View {
                             }
                             .multilineTextAlignment(.center)
                             .foregroundColor(foregroundColor)
+                            .padding(20)
                         }
-                        .padding(20)
                         .containerRelativeFrame(.horizontal)
                         .id(index)
                     }
@@ -91,16 +101,10 @@ public struct OnboardingView: View {
             .containerRelativeFrame(.horizontal, count: 1, spacing: 0)
             .scrollClipDisabled()
             .scrollPosition(id: $hStackScrollPosition)
-
-            if slides.count > 1 {
-                IndicatorView(currentIndex: (hStackScrollPosition ?? 0),
-                              count: slides.count,
-                              color: foregroundColor)
-                .padding(.vertical, 16)
-            }
             
             buttons
                 .padding(.vertical, 16)
+                .frame(maxHeight: .infinity, alignment: .bottom)
             
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -139,9 +143,7 @@ public struct OnboardingView: View {
                 action: {
                     if (hStackScrollPosition ?? 0) < slides.count - 1 {
                         onChange?(hStackScrollPosition ?? 0)
-                        withAnimation {
-                            hStackScrollPosition = (hStackScrollPosition ?? 0) + 1
-                        }
+                        hStackScrollPosition = (hStackScrollPosition ?? 0) + 1
                     } else {
                         UINotificationFeedbackGenerator().notificationOccurred(.success)
                         onFinish()
@@ -197,7 +199,7 @@ public struct OnboardingView: View {
         ],
         backgroundColor: .white,
         foregroundColor: .black,
-        buttonBackgroundColor: .black.opacity(0.8),
+        buttonBackgroundColor: .pink.opacity(0.8),
         buttonColor: .white,
         onChange: nil,
         onFinish: {
