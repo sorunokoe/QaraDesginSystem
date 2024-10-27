@@ -81,10 +81,10 @@ public struct OnboardingView: View {
                             }
                             VStack(alignment: .center, spacing: 16) {
                                 Text(slide.title)
-                                    .font(.system(size: 32, weight: .medium))
+                                    .font(.system(size: 30, weight: .medium))
                                     .fixedSize(horizontal: false, vertical: true)
                                 Text(slide.description)
-                                    .font(.system(size: 18, weight: .regular))
+                                    .font(.system(size: 20, weight: .regular))
                                     .fixedSize(horizontal: false, vertical: true)
                             }
                             .multilineTextAlignment(.center)
