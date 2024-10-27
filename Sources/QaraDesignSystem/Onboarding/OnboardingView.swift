@@ -74,7 +74,7 @@ public struct OnboardingView: View {
             Spacer()
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 0) {
-                    ForEach(Array(slides.enumerated()), id: \.offset) { index, slide in
+                    ForEach(slides, id: \.id) { slide in
                         VStack(alignment: .center) {
                             if let contentView = slide.contentView {
                                 contentView()
@@ -92,7 +92,7 @@ public struct OnboardingView: View {
                             .padding(20)
                         }
                         .containerRelativeFrame(.horizontal)
-                        .id(index)
+                        .id(slides.firstIndex { $0.id == slide.id })
                     }
                 }
                 .scrollTargetLayout()
@@ -165,7 +165,7 @@ public struct OnboardingView: View {
                     AnyView(Image(systemName: "basketball.circle.fill")
                         .resizable()
                         .frame(width: 100, height: 100)
-                        .foregroundStyle(.white))
+                        .foregroundStyle(.primary))
                 },
                 title: "Step 1",
                 description: "1: Complete daily quest to increase your level and get powerful",
@@ -177,7 +177,7 @@ public struct OnboardingView: View {
                     AnyView(Image(systemName: "volleyball.circle.fill")
                         .resizable()
                         .frame(width: 100, height: 100)
-                        .foregroundStyle(.white))
+                        .foregroundStyle(.primary))
                 },
                 title: "Step 2",
                 description: "2: Complete daily quest to increase your level and get powerful",
@@ -189,7 +189,7 @@ public struct OnboardingView: View {
                     AnyView(Image(systemName: "trophy.circle.fill")
                         .resizable()
                         .frame(width: 100, height: 100)
-                        .foregroundStyle(.white))
+                        .foregroundStyle(.primary))
                 },
                 title: "Step 3",
                 description: "3: Complete daily quest to increase your level and get powerful",
